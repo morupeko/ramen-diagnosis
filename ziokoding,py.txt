@@ -1,0 +1,25 @@
+import pandas as pd
+from geopy.geocoders import Nominatim
+from time import sleep
+
+# Excelファイルの読み込み
+df = pd.read_excel("addresses.xlsx")
+
+# ジオコーダーのセットアップ
+geolocator = Nominatim(user_agent="geoapiExercises")
+
+# 緯度・経度の取得
+def get_lat_lon(address):
+    try:
+        location = geolocator.geocode(address)
+        if location:
+            return pd.Series([location.latitude, location.longitude])
+    except:
+        return pd.Series([None, None])
+    return pd.Series([None, None])
+
+# 住所から緯度経度を取得
+df[["Latitude", "Longitude"]] = df["住所"].apply(get_lat_lon)
+
+# 結果をExcelに保存
+df.to_excel("addresses_with_latlon.xlsx", index=False)

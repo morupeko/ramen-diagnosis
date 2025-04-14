@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラーメン診断結果</title>
+    <style>
+        body {
+            background-color: #FF6347;
+            font-family: 'Arial', sans-serif;
+            color: rgba(27, 3, 3, 0.384);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-top: 50px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+            animation: bounceIn 1s ease-out;
+        }
+
+        h3 {
+            margin-top: 30px;
+            font-size: 2.5em;
+            color: #fff;
+        }
+
+        .result {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.8);
+            margin-top: 50px;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        .ramen-shop, .takumen-product {
+            background-color: #FFD700;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .ramen-shop img, .takumen-product img {
+            width: 200px;
+            border-radius: 10px;
+        }
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #FF6347;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* アニメーション */
+        @keyframes bounceIn {
+            0% {
+                transform: translateY(-200px);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(30px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🍥ラーメン診断結果🍥</h1>
+
+    <div class="result">
+        <h3>🍥あんたにめちゃんこ合ったのみつかったわ!🍥</h3>
+
+        <!-- 宅麺を上に変更 -->
+        <div class="takumen-product">
+            <h3>🍥おすすめの宅麺🍥</h3>
+            {% if takumen_products %}
+                <ul>
+                    {% for product in takumen_products %}
+                        <li>
+                            <strong>🍥{{ product["商品名"] }}🍥</strong><br>
+                            <img src="{{ product['写真リンク'] }}" alt="{{ product['商品名'] }}"><br>
+                            詳細: <a href="{{ product["詳細リンク"] }}" target="_blank">こちらをクリック</a><br>
+                            価格: {{ product["価格(税抜き、税込み)"] }}<br>
+                            <p><strong>簡単な詳細:</strong> {{ product["簡単な詳細"] }}</p>
+                            <p><strong>特定的な詳細:</strong> {{ product["特定的な詳細"] }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>宅麺のデータが見つかりませんでした。</p>
+            {% endif %}
+        </div>
+
+        <!-- ラーメン店を下に変更 -->
+        <div class="ramen-shop">
+            <h3>🍥おすすめのラーメン店🍥</h3>
+            {% if shops %}
+                <ul>
+                    {% for shop in shops %}
+                        <li>
+                            <strong>🍥{{ shop["タイトル"] }}🍥</strong><br>
+                            住所: {{ shop["住所"] }}<br>
+                            営業時間: {{ shop["営業時間"] }}<br>
+                            <a href="{{ shop["タイトルリンク"] }}" target="_blank">詳細</a><br>
+                            距離: {{ shop["距離_表示"] }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>近くのラーメン店が見つかりませんでした。コンビニでラーメンを探してみてください！</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2025 ラーメン診断. <a href="/">診断をもう一度する</a></p>
+    </div>
+</body>
+</html>

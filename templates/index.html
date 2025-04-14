@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラーメン診断</title>
+    <style>
+        /* 画面全体の背景を黒に設定 */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #000000; /* 背景を黒に設定 */
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            color: white;
+            text-align: center;
+            padding: 0;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 5em; /* フォントサイズを大きく */
+            font-weight: bold; /* 文字を太く */
+            color: #FF6347;
+            text-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7); /* より濃い影を追加 */
+            margin-top: 50px;
+            animation: bounceIn 1s ease-out;
+        }
+
+        h2 {
+            font-size: 3.5em; /* フォントサイズを大きく */
+            font-weight: bold; /* 文字を太く */
+            color: #FFD700;
+            margin-top: 20px;
+            animation: fadeIn 1.5s ease-in;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* 影を追加して背景と被らないように */
+        }
+
+        form {
+            background-image: url('https://sozaino.site/wp-content/uploads/2022/03/ramen48.png');
+            background-color: #000000; /* 背景色を黒に変更 */
+            background-size: cover;
+            background-position: center;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            display: inline-block;
+            width: 80%;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.6);
+            color: rgba(27, 2, 2, 0.767);
+        }
+
+        label {
+            font-size: 2em; /* ラベルのフォントサイズを大きく */
+            font-weight: bold; /* ラベルを太く */
+            margin: 15px;
+            display: inline-block;
+            color: #FFFFFF;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* ラベルに影を追加 */
+        }
+
+        input[type="radio"] {
+            margin: 20px;
+            transform: scale(1.5);
+            transition: transform 0.3s ease;
+        }
+
+        input[type="radio"]:checked {
+            background-color: #FFD700;
+            transform: scale(1.8);
+        }
+
+        input[type="submit"] {
+            background-color: #FF6347;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 2.5em; /* ボタンの文字サイズを大きく */
+            font-weight: bold; /* ボタンの文字を太く */
+            transition: all 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #FF4500;
+            transform: scale(1.1);
+        }
+
+        h3 {
+            margin-top: 50px;
+            font-size: 2.5em; /* フォントサイズを大きく */
+            color: #FFF;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7); /* 文字に影を追加 */
+        }
+
+        .footer {
+            background-color: #222;
+            color: #fff;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .footer a {
+            color: #FF6347;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* 質問文のスタイル */
+        .question-container p {
+            font-size: 3em; /* 質問文を大きく */
+            font-weight: bold; /* 太字に */
+            color: #1b190cd7; /* 質問文の色を黄色に */
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7); /* 文字に影を追加して背景と被らないように */
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+            animation: slideIn 0.5s ease-in;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: translateY(-200px); opacity: 0; }
+            60% { transform: translateY(30px); opacity: 1; }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🍥ラーメン診断！🍥🍜🍥</h1>
+    <h2>🍥あんたの食うべきラーメンおすすめしたるわ！🍥</h2>
+    <form action="/result" method="POST">
+        {% for question in questions %}
+            <div class="question-container">
+                <p>{{ question }}</p>
+                <input type="radio" id="q{{ loop.index0 }}_yes" name="q{{ loop.index0 }}" value="はい" required>
+                <label for="q{{ loop.index0 }}_yes">はい</label>
+                <input type="radio" id="q{{ loop.index0 }}_no" name="q{{ loop.index0 }}" value="いいえ">
+                <label for="q{{ loop.index0 }}_no">いいえ</label>
+                <input type="radio" id="q{{ loop.index0 }}_maybe" name="q{{ loop.index0 }}" value="どっちでもない">
+                <label for="q{{ loop.index0 }}_maybe">どっちでもない</label>
+            </div>
+        {% endfor %}
+        
+        <h3>現在地情報を入力しよう！</h3>
+        <label for="lat">緯度:</label>
+        <input type="text" name="lat" id="lat" readonly><br>
+
+        <label for="lng">経度:</label>
+        <input type="text" name="lng" id="lng" readonly><br>
+        
+        <input type="submit" value="ラーメン診断スタートやで！">
+    </form>
+
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                document.getElementById('lat').value = position.coords.latitude;
+                document.getElementById('lng').value = position.coords.longitude;
+            }, function(error) {
+                alert("位置情報の取得に失敗しました。手動で入力してください。");
+            });
+        } else {
+            alert("位置情報が利用できません。");
+        }
+
+        document.querySelector('input[type="submit"]').addEventListener('click', function() {
+            let audio = new Audio('https://example.com/ramen-sound.mp3');
+            audio.play();
+        });
+    </script>
+
+    <div class="footer">
+        <p>© 2025 ラーメン診断. もう一度診断したい？ <a href="/">再診断</a></p>
+    </div>
+</body>
+</html>
